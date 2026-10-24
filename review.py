@@ -9,7 +9,7 @@ import argparse
 import sys
 import webbrowser
 
-from jobfinder import config, store
+from jobfinder import store
 
 
 def show(row: dict) -> None:
@@ -30,7 +30,7 @@ def review() -> None:
         return
     for i, row in enumerate(pending, 1):
         show(row)
-        letter = config.ROOT / row["letter_path"]
+        letter = store.letter_file(row)
         print("-" * 70)
         print(letter.read_text(encoding="utf-8") if letter.exists() else f"(letter missing: {letter})")
         print("-" * 70)

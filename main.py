@@ -45,11 +45,13 @@ async def build_profile() -> dict:
     return profile
 
 
-def confirm_profile(profile: dict) -> dict:
+def confirm_profile(profile: dict, ask: bool = True) -> dict:
     config.PROFILE_PATH.write_text(json.dumps(profile, indent=2, ensure_ascii=False), encoding="utf-8")
     print("\n=== Profile ===")
     print(json.dumps(profile, indent=2, ensure_ascii=False))
     print(f"\nSaved to {config.PROFILE_PATH}.")
+    if not ask:
+        return profile
     answer = input("Press Enter to continue, edit the file first and then press Enter, or type q to quit: ")
     if answer.strip().lower() == "q":
         sys.exit(0)
@@ -121,12 +123,13 @@ async def main() -> None:
     parser.add_argument("--profile-only", action="store_true", help="only run phase 1 (read the CV)")
     parser.add_argument("--agents", type=int, default=config.NUM_AGENTS)
     parser.add_argument("--jobs-per-agent", type=int, default=config.JOBS_PER_AGENT)
+    parser.add_argument("--yes", action="store_true", help="don't ask to confirm the profile (used by the UI)")
     args = parser.parse_args()
 
     if args.refresh_profile or not config.PROFILE_PATH.exists():
         if not config.CV_PATH.exists():
             sys.exit(f"Put your CV at {config.CV_PATH} first.")
-        profile = confirm_profile(await build_profile())
+        profile = confirm_profile(await build_profile(), ask=not args.yes)
     else:
         profile = json.loads(config.PROFILE_PATH.read_text(encoding="utf-8"))
         print(f"Using existing profile {config.PROFILE_PATH} (pass --refresh-profile to re-read the CV).")

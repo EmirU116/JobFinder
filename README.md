@@ -16,7 +16,21 @@ $env:ANTHROPIC_API_KEY = "sk-ant-..."   # or be logged in to Claude Code
 ```
 Copy your CV to `data\cv.pdf`.
 
-## Run
+## Web UI (recommended)
+```powershell
+streamlit run app.py
+```
+Opens at http://localhost:8501 with these pages:
+
+| Page | What it does |
+|---|---|
+| **Dashboard** | Key numbers, status and work-mode charts, upcoming deadlines, recently found jobs, results per agent |
+| **Review queue** | Reviews applications one at a time, with an editable cover letter: approve, skip, or open the ad |
+| **All applications** | The CSV as a filterable table (search, status, work mode, agent). Select a row to edit its status, notes, deadline and letter. Export to CSV |
+| **CV & profile** | Upload a CV, rebuild the profile with the agent, and edit the profile fields |
+| **Run search** | Choose the number of agents and jobs per agent, start or stop a run, and follow the live log |
+
+## Command line
 ```powershell
 python main.py                       # read CV (first time) + run the 3 agents
 python main.py --jobs-per-agent 1    # small test run
