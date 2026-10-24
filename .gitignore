@@ -1,0 +1,9 @@
+# Personal data: never commit
+data/
+output/
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
